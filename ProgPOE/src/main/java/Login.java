@@ -31,7 +31,6 @@ public class Login {
 
     //Method to check the phone number
     public boolean checkCellPhoneNumber() {
-
         return PhoneNum.matches("^\\+\\d{1,3}\\d{1,10}$");
     }
 
