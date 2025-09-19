@@ -1,5 +1,5 @@
 # ProgPOE
-##Part 1
+## Part 1
 This part of the project is a simple **Java-based login and registration system** that allows users to:
 
 * Register with their first name, surname, username, password, and phone number.
