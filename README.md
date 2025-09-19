@@ -91,6 +91,7 @@ This login system is implemented in **three main files**: `login.java`, `main.ja
 ## Where to find the files in the folder
 
 Open the ProgPOE folder, then navigate to the folder named "src". You'll find the main.java and the login.java files in the main/java folder. You'll find the loginTest.java file in the test/java folder.
+
 ---
 ## How to Run
 
