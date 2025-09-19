@@ -17,19 +17,21 @@ public class Login {
         this.PhoneNum = PhoneNum;
     }
 
-    //Method to check if the username is correct containing "_" and no longer than 5
+    //Method to check if the username is correct contains an "_" and is no longer than 5 caharcaters long
     public boolean checkUserName() {
         return UserName.contains("_") && UserName.length() <= 5;
     }
 
-    //Method to check if the password is correct according to the complexity
+    //Method to check if the password is correct according to the complexity required
     public boolean checkPasswordComplexity() {
         return Password.length() >= 8 && Password.matches(".*[A-Z].*") &&
                 Password.matches(".*[0-9].*") &&
                 Password.matches(".*[!@#$%^&*(),.?\":{}|<>].*");
     }
 
-    //Method to check the phone number
+    // Method to validate the user's phone number
+    // Ensures the number starts with an international code (e.g., +27)
+    // and contains no more than 10 digits after the code
     public boolean checkCellPhoneNumber() {
         return PhoneNum.matches("^\\+\\d{1,3}\\d{1,10}$");
     }

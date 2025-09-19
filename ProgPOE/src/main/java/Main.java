@@ -6,7 +6,7 @@ public class Main {
         //Call static method for the registration
         Login user = Login.registerUser();
 
-        //If user is registered, user logs in
+        //If the user is registered, the user will be asked to log n
         if (user.checkUserName() && user.checkPasswordComplexity() && user.checkCellPhoneNumber()) {
             System.out.println("\n=== Login ===");
             System.out.print("Enter Username: ");

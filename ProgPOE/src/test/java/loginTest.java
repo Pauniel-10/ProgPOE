@@ -33,5 +33,4 @@ public class loginTest {
         Login user = new Login("Kyle", "Walker", "kyl_1", "Password1!", "+27831234567");
         assertFalse(user.loginUser("kyl_1","WrongPass"));
     }
-
 }
