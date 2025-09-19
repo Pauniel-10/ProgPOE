@@ -3,6 +3,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class loginTest {
+
     @Test
     public void testValidUserName(){
         Login user = new Login("Kyle", "Walker", "kyl_1", "Password1!", "+27831234567" );
