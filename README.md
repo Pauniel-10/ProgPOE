@@ -76,4 +76,5 @@ Future Improvements
 •	Improve error handling with custom exceptions.
 •	Add a graphical user interface (GUI).
 ________________________________________
-
+References
+- OpenAI. (2025). *ChatGPT (Sep 17 version)* [Large language model]. Available at: https://chat.openai.com/ (Accessed: 17 September 2025).
