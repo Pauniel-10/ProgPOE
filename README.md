@@ -1,4 +1,5 @@
 # ProgPOE
+
 ## Part 1
 This part of the project is a simple **Java-based login and registration system** that allows users to:
 
@@ -42,9 +43,47 @@ The project also includes **JUnit tests** to verify the correctness of the valid
 
 ---
 
-## Implementation Notes
+## Implementation Notes / Code Explanation
 
-The phone number validation method (`checkCellPhoneNumber`) uses a regex pattern suggested by **ChatGPT** (OpenAI, 2025).
+This login system is implemented in **three main files**: `login.java`, `main.java`, and `logintest.java`.
+
+**1. `login.java` – Login Class**
+
+* **Purpose**: Handles user registration, validation, and login functionality.
+* **Attributes**:
+
+  * `FName`, `SName` → Stores the user’s first and last names.
+  * `UserName`, `Password` → Stores the credentials for login.
+  * `PhoneNum` → Stores the user’s phone number with international code.
+* **Key Methods**:
+
+  * `checkUserName()` → Ensures the username contains an underscore `_` and is no longer than 5 characters.
+  * `checkPasswordComplexity()` → Validates the password is at least 8 characters, contains an uppercase letter, a number, and a special character.
+  * `checkCellPhoneNumber()` → Validates the phone number format, including the international code.
+  * `registerUser()` → Static method that prompts the user for registration details, validates input, and returns a `Login` object if all data is correct.
+  * `loginUser()` → Checks if the entered username and password match the stored credentials.
+  * `returnLoginStatus()` → Prints a welcome message and user details if login is successful, otherwise shows an error.
+
+**2. `main.java` – Main Program**
+
+* Calls `registerUser()` to allow a new user to register.
+* If registration succeeds, prompts the user to log in.
+* Displays login results and user details using `returnLoginStatus()`.
+
+**3. `logintest.java` – JUnit Tests**
+
+* Contains tests to ensure each method behaves correctly.
+* **Tests include**:
+
+  * Valid and invalid username checks.
+  * Valid and invalid password checks.
+  * Successful and failed login attempts.
+
+**Additional Notes**
+
+* The phone number regex used in `checkCellPhoneNumber()` was suggested by **ChatGPT (OpenAI, 2025)**.
+* The system is **console-based**; user data is stored only during runtime and is **not persisted** after the program ends.
+* Passwords are stored in **plain text**, which is a security limitation to be improved in future versions.
 
 ---
 
@@ -87,7 +126,7 @@ Enter Phone number: +27831234567
 
 Registration successful, please login
 
-=== Login === 
+=== Login ===
 Enter Username: kyl_1
 Enter Password: Password1!
 Welcome, Kyle Walker. It is great to see you again.
@@ -130,9 +169,7 @@ What would you like to do today?
 ---
 
 ## References
+
 * OpenAI. (2025). *ChatGPT (Sep 17 version)* \[Large language model]. Available at: [https://chat.openai.com/](https://chat.openai.com/) (Accessed: 17 September 2025).
 
-
----
-
-
+Do you want me to do that?
