@@ -1,4 +1,6 @@
 # ProgPOE
+GitHub link: 
+https://github.com/Pauniel-10/ProgPOE
 
 ## Part 1
 This part of the project is a simple **Java-based login and registration system** that allows users to:
@@ -86,7 +88,10 @@ This login system is implemented in **three main files**: `login.java`, `main.ja
 * Passwords are stored in **plain text**, which is a security limitation to be improved in future versions.
 
 ---
+## Where to find the files in the folder
 
+Open the ProgPOE folder, then navigate to the folder named "src". You'll find the main.java and the login.java files in the main/java folder. You'll find the loginTest.java file in the test/java folder.
+---
 ## How to Run
 
 ```bash
@@ -171,5 +176,3 @@ What would you like to do today?
 ## References
 
 * OpenAI. (2025). *ChatGPT (Sep 17 version)* \[Large language model]. Available at: [https://chat.openai.com/](https://chat.openai.com/) (Accessed: 17 September 2025).
-
-Do you want me to do that?
