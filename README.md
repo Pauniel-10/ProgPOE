@@ -115,7 +115,6 @@ What would you like to do today?
 
 ## Limitations & Known Issues
 
-* The phone number validation in `main.java` currently uses a **hardcoded number** instead of the user's input.
 * Passwords are stored in **plain text**.
 * User data is **not persisted** after program termination.
 
@@ -131,10 +130,8 @@ What would you like to do today?
 ---
 
 ## References
-
 * OpenAI. (2025). *ChatGPT (Sep 17 version)* \[Large language model]. Available at: [https://chat.openai.com/](https://chat.openai.com/) (Accessed: 17 September 2025).
-* Oracle. (2025). *Java Platform, Standard Edition Documentation*. Available from [https://docs.oracle.com/javase/](https://docs.oracle.com/javase/)
-* JUnit. (2025). *JUnit 4 Documentation*. Available from [https://junit.org/junit4/](https://junit.org/junit4/)
+
 
 ---
 
