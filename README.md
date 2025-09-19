@@ -1,6 +1,6 @@
 # ProgPOE
-
-This project is a simple **Java-based login and registration system** that allows users to:
+##Part 1
+This part of the project is a simple **Java-based login and registration system** that allows users to:
 
 * Register with their first name, surname, username, password, and phone number.
 * Validate username, password, and phone number according to specific rules.
