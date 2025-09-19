@@ -171,5 +171,3 @@ What would you like to do today?
 ## References
 
 * OpenAI. (2025). *ChatGPT (Sep 17 version)* \[Large language model]. Available at: [https://chat.openai.com/](https://chat.openai.com/) (Accessed: 17 September 2025).
-
-Do you want me to do that?
