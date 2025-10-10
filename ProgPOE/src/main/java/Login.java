@@ -31,26 +31,39 @@ public class Login {
 
     public static Login registerUser() {
         String FName = JOptionPane.showInputDialog("Enter First Name:");
+        if (FName == null) System.exit(0);
+
         String SName = JOptionPane.showInputDialog("Enter Surname:");
+        if (SName == null) System.exit(0);
+
         String UserName = JOptionPane.showInputDialog(
-                "Enter Username:\n- Must contain '_'\n- Max 5 characters");
+                "Enter Username:\n- Must contain '_'\n- Max 5 characters"
+        );
+        if (UserName == null) System.exit(0);
+
         String Password = JOptionPane.showInputDialog(
-                "Enter Password:\n- Min 8 characters\n- Capital letter\n- Number\n- Special character");
+                "Enter Password:\n- Min 8 characters\n- 1 capital letter\n- 1 number\n- 1 special character"
+        );
+        if (Password == null) System.exit(0);
+
         String PhoneNum = JOptionPane.showInputDialog(
-                "Enter phone number:\n- Include international code, e.g., +27\n- Max 10 digits");
+                "Enter Phone Number:\n- Must contain international code (e.g., +27)\n- Max 10 digits after code"
+        );
+        if (PhoneNum == null) System.exit(0);
 
         Login user = new Login(FName, SName, UserName, Password, PhoneNum);
 
-        StringBuilder errors = new StringBuilder();
-        if (!user.checkUserName()) errors.append("Username incorrectly formatted.\n");
-        if (!user.checkPasswordComplexity()) errors.append("Password incorrectly formatted.\n");
-        if (!user.checkCellPhoneNumber()) errors.append("Cell phone number incorrectly formatted.\n");
-
-        if (!errors.isEmpty()) {
-            JOptionPane.showMessageDialog(null, errors.toString());
-        } else {
-            JOptionPane.showMessageDialog(null, "Registration successful, please login.");
-        }
+        if (!user.checkUserName())
+            JOptionPane.showMessageDialog(null,
+                    "Username incorrectly formatted. Must contain '_' and max 5 chars.");
+        if (!user.checkPasswordComplexity())
+            JOptionPane.showMessageDialog(null,
+                    "Password incorrectly formatted. Ensure complexity requirements.");
+        if (!user.checkCellPhoneNumber())
+            JOptionPane.showMessageDialog(null,
+                    "Cell phone number incorrectly formatted.");
+        else
+            JOptionPane.showMessageDialog(null, "Registration successful, please login");
 
         return user;
     }
@@ -61,10 +74,13 @@ public class Login {
 
     public boolean returnLoginStatus(String newUser, String newPassword) {
         if (loginUser(newUser, newPassword)) {
-            JOptionPane.showMessageDialog(null, "Welcome, " + FName + " " + SName + ". It is great to see you again.\n\nUser Details:\nName: " + FName + " " + SName + "\nUsername: " + UserName + "\nPhone Number: " + PhoneNum);
+            JOptionPane.showMessageDialog(null,
+                    "Welcome, " + FName + " " + SName + ". It is great to see you again.\n" +
+                            "User Details:\nName: " + FName + " " + SName +
+                            "\nUsername: " + UserName + "\nPhone: " + PhoneNum);
             return true;
         } else {
-            JOptionPane.showMessageDialog(null, "Username or password is incorrect, please try again.");
+            JOptionPane.showMessageDialog(null, "Username or password is incorrect.");
             return false;
         }
     }

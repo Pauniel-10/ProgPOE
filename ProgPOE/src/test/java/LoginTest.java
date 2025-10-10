@@ -103,7 +103,8 @@ public class LoginTest {
     public void testMessageIDLength() {
         String messageID = "1234567890"; // 10 chars
         Message.createMessageHash(messageID, 0, "Hello world");
-        Message msg = new Message(messageID);
+        Message msg;
+        msg = new Message(messageID);
         assertTrue(msg.checkMessageID());
     }
 
