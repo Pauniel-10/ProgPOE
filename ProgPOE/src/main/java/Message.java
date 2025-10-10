@@ -79,59 +79,56 @@ public class Message {
 
     public static void startChat() {
         JOptionPane.showMessageDialog(null, "Welcome to Quickchat.");
-        Random rand = new Random();
 
-        String numStr = JOptionPane.showInputDialog("How many messages would you like to send?");
-        if (numStr == null) System.exit(0);
-        int numMessages = Integer.parseInt(numStr);
+        int numMessages = Integer.parseInt(JOptionPane.showInputDialog("How many messages would you like to send?"));
         String[][] allMessages = new String[numMessages][4];
+        Random rand = new Random();
+        int totalMessagesSent = 0;
 
-        int i = 0;
-        label:
-        while (i < numMessages) {
+        boolean running = true; // Outer menu loop
+        while (running) {
             String option = JOptionPane.showInputDialog(
-                    "Options:\n1) Send Message\n2) Show Recently Sent Messages (Coming Soon)\n3) Quit"
+                    """
+                            Select an option:
+                            1) Send Messages
+                            2) Show Recently Sent Messages (Coming Soon)
+                            3) Quit"""
             );
-            if (option == null) System.exit(0);
 
             switch (option) {
-                case "1":
-                    String recipient = JOptionPane.showInputDialog("Enter recipient number (+CountryCode then number):");
-                    if (recipient == null) System.exit(0);
-                    JOptionPane.showMessageDialog(null, checkRecipientCell(recipient));
+                case "1" -> {
+                    int messagesSent = 0; // Track messages sent for this session
 
-                    String message = JOptionPane.showInputDialog("Enter your message:");
-                    if (message == null) System.exit(0);
-                    JOptionPane.showMessageDialog(null, checkMessageLength(message));
+                    while (messagesSent < numMessages) { // Inner message loop
+                        String recipient = JOptionPane.showInputDialog("Enter recipient number (+CountryCode then number):");
+                        JOptionPane.showMessageDialog(null, checkRecipientCell(recipient));
 
-                    String messageID = String.valueOf(1000000000 + rand.nextInt(900000000));
-                    String hash = createMessageHash(messageID, i, message);
+                        String message = JOptionPane.showInputDialog("Enter your message (max 250 chars):");
+                        JOptionPane.showMessageDialog(null, checkMessageLength(message));
 
-                    String sendChoice = JOptionPane.showInputDialog("Select:\n1) Send Message\n2) Disregard Message\n3) Store Message");
-                    if (sendChoice == null) System.exit(0);
+                        String messageID = String.valueOf(1000000000 + rand.nextInt(900000000));
+                        String hash = createMessageHash(messageID, messagesSent, message);
 
-                    String status = sendMessage(sendChoice);
-                    JOptionPane.showMessageDialog(null, status);
+                        String sendChoice = JOptionPane.showInputDialog("Select:\n1) Send Message\n2) Disregard Message\n3) Store Message");
+                        String status = sendMessage(sendChoice);
+                        JOptionPane.showMessageDialog(null, status);
 
-                    if (sendChoice.equals("1") || sendChoice.equals("3")) {
-                        printMessages(messageID, hash, recipient, message);
-                        storeMessage(allMessages, i, messageID, hash, recipient, message);
+                        if (sendChoice.equals("1") || sendChoice.equals("3")) {
+                            printMessages(messageID, hash, recipient, message);
+                            storeMessage(allMessages, messagesSent, messageID, hash, recipient, message);
+                        }
+
+                        messagesSent++;
+                        totalMessagesSent = returnTotalMessages(); // Keep total count updated
                     }
-
-                    i++;
-                    break;
-                case "2":
-                    JOptionPane.showMessageDialog(null, "Coming Soon.");
-                    break;
-                case "3":
-                    break label;
-                default:
-                    JOptionPane.showMessageDialog(null, "Invalid option. Please try again.");
-                    break;
+                }
+                case "2" -> JOptionPane.showMessageDialog(null, "Coming Soon.");
+                case "3" -> running = false; // Exit the menu loop
+                default -> JOptionPane.showMessageDialog(null, "Invalid option. Please try again.");
             }
         }
 
-        JOptionPane.showMessageDialog(null, "Total messages sent: " + returnTotalMessages());
+        JOptionPane.showMessageDialog(null, "Total messages sent: " + totalMessagesSent);
     }
 
 }
