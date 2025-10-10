@@ -88,4 +88,7 @@ public class Login {
         }
         return "\nWhat would you like to do today? ";
     }
+    public String getFName() {
+        return FName;
+    }
 }
