@@ -2,7 +2,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import java.util.Random;
 
-public class loginTest {
+public class LoginTest {
 
     // --------------------------
     // Original Login Tests
@@ -54,10 +54,9 @@ public class loginTest {
 
     @Test
     public void testMessageLengthFailure() {
-        StringBuilder longMsg = new StringBuilder();
-        for(int i=0; i<260; i++) longMsg.append("a"); // 260 chars
         String expected = "Message exceeds 250 characters by 10, please reduce size.";
-        assertEquals(expected, Message.checkMessageLength(longMsg.toString()));
+        assertEquals(expected, Message.checkMessageLength("a".repeat(260) // 260 chars
+        ));
     }
 
     @Test
@@ -103,8 +102,8 @@ public class loginTest {
     @Test
     public void testMessageIDLength() {
         String messageID = "1234567890"; // 10 chars
-        String hash = Message.createMessageHash(messageID, 0, "Hello world");
-        Message msg = new Message(messageID, hash, "+27831234567", "Hello world");
+        Message.createMessageHash(messageID, 0, "Hello world");
+        Message msg = new Message(messageID);
         assertTrue(msg.checkMessageID());
     }
 
@@ -119,7 +118,7 @@ public class loginTest {
         String messageID1 = String.valueOf(1000000000 + rand.nextInt(900000000)); // auto-generated
         String msg1Content = "Hi Mike, can you join us for dinner tonight";
         String recipient1 = "+27718693002";
-        String hash1 = Message.createMessageHash(messageID1, 1, msg1Content);
+        Message.createMessageHash(messageID1, 1, msg1Content);
 
         // Check validations
         assertEquals("Cell phone number successfully captured.", Message.checkRecipientCell(recipient1));
@@ -130,7 +129,7 @@ public class loginTest {
         String messageID2 = String.valueOf(1000000000 + rand.nextInt(900000000)); // auto-generated
         String msg2Content = "Hi Keegan, did you receive the payment?";
         String recipient2 = "+27857595889"; // standardized with international code
-        String hash2 = Message.createMessageHash(messageID2, 2, msg2Content);
+        Message.createMessageHash(messageID2, 2, msg2Content);
 
         // Check validations
         assertEquals("Cell phone number successfully captured.", Message.checkRecipientCell(recipient2));

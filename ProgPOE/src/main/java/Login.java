@@ -1,11 +1,11 @@
 import javax.swing.JOptionPane;
 
 public class Login {
-    private String FName;
-    private String SName;
-    private String UserName;
-    private String Password;
-    private String PhoneNum;
+    private final String FName;
+    private final String SName;
+    private final String UserName;
+    private final String Password;
+    private final String PhoneNum;
 
     public Login(String FName, String SName, String UserName, String Password, String PhoneNum) {
         this.FName = FName;
@@ -46,7 +46,7 @@ public class Login {
         if (!user.checkPasswordComplexity()) errors.append("Password incorrectly formatted.\n");
         if (!user.checkCellPhoneNumber()) errors.append("Cell phone number incorrectly formatted.\n");
 
-        if (errors.length() > 0) {
+        if (!errors.isEmpty()) {
             JOptionPane.showMessageDialog(null, errors.toString());
         } else {
             JOptionPane.showMessageDialog(null, "Registration successful, please login.");
@@ -69,7 +69,4 @@ public class Login {
         }
     }
 
-    public String getFName() {
-        return FName;
-    }
 }
