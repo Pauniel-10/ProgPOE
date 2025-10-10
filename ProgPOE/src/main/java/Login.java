@@ -1,6 +1,5 @@
-import java.util.Scanner;
+import javax.swing.JOptionPane;
 
-//Instance attributes
 public class Login {
     private String FName;
     private String SName;
@@ -8,7 +7,6 @@ public class Login {
     private String Password;
     private String PhoneNum;
 
-    //Constructors
     public Login(String FName, String SName, String UserName, String Password, String PhoneNum) {
         this.FName = FName;
         this.SName = SName;
@@ -17,77 +15,60 @@ public class Login {
         this.PhoneNum = PhoneNum;
     }
 
-    //Method to check if the username is correct contains an "_" and is no longer than 5 caharcaters long
     public boolean checkUserName() {
         return UserName.contains("_") && UserName.length() <= 5;
     }
 
-    //Method to check if the password is correct according to the complexity required
     public boolean checkPasswordComplexity() {
         return Password.length() >= 8 && Password.matches(".*[A-Z].*") &&
                 Password.matches(".*[0-9].*") &&
                 Password.matches(".*[!@#$%^&*(),.?\":{}|<>].*");
     }
 
-    // Method to validate the user's phone number
-    // Ensures the number starts with an international code (e.g., +27)
-    // and contains no more than 10 digits after the code
     public boolean checkCellPhoneNumber() {
         return PhoneNum.matches("^\\+\\d{1,3}\\d{1,10}$");
     }
 
-    //Static method to handle the registration and the error messages
     public static Login registerUser() {
-        Scanner reader = new Scanner(System.in);
-        // User registers account
-        System.out.println("====== Register here =======");
-        System.out.println("Enter First Name: ");
-        String FName = reader.nextLine();
-        System.out.println("Enter Surname: ");
-        String SName = reader.nextLine();
-        System.out.println("------------------------------------------------\n -Username must contain '_'\n -Username must be no longer than 5 characters\n------------------------------------------------");
-        System.out.println("Enter Username: ");
-        String UserName = reader.nextLine();
-        System.out.println("------------------------------------------------\n -Password must be at least 8 characters long\n -Password must contain a capital letter\n -Password must contain a number\n -Password must contain a special character\n------------------------------------------------");
-        System.out.println("Enter Password: ");
-        String Password = reader.nextLine();
-        System.out.println("------------------------------------------------\n -Phone number must contain international code, eg +27\n -No more than 10 characters long\n------------------------------------------------");
-        System.out.println("Enter phone number: ");
-        String PhoneNum = reader.nextLine();
+        String FName = JOptionPane.showInputDialog("Enter First Name:");
+        String SName = JOptionPane.showInputDialog("Enter Surname:");
+        String UserName = JOptionPane.showInputDialog(
+                "Enter Username:\n- Must contain '_'\n- Max 5 characters");
+        String Password = JOptionPane.showInputDialog(
+                "Enter Password:\n- Min 8 characters\n- Capital letter\n- Number\n- Special character");
+        String PhoneNum = JOptionPane.showInputDialog(
+                "Enter phone number:\n- Include international code, e.g., +27\n- Max 10 digits");
 
         Login user = new Login(FName, SName, UserName, Password, PhoneNum);
 
-        if (!user.checkUserName()) {
-            System.out.println("Username is not correctly formatted, please ensure that your username contains an underscore and is no more than five characters in length.");
-        }
-        if (!user.checkPasswordComplexity()) {
-            System.out.println("Password is not correctly formatted, please ensure that the password is at least eight characters, a capital letter, a number, and a special character.");
+        StringBuilder errors = new StringBuilder();
+        if (!user.checkUserName()) errors.append("Username incorrectly formatted.\n");
+        if (!user.checkPasswordComplexity()) errors.append("Password incorrectly formatted.\n");
+        if (!user.checkCellPhoneNumber()) errors.append("Cell phone number incorrectly formatted.\n");
 
-        }
-        if (!user.checkCellPhoneNumber()) {
-            System.out.println("Cell phone number incorrectly formatted or does not contain international code.");
+        if (errors.length() > 0) {
+            JOptionPane.showMessageDialog(null, errors.toString());
         } else {
-            System.out.println("Registration successful, please login");
+            JOptionPane.showMessageDialog(null, "Registration successful, please login.");
         }
+
         return user;
     }
 
-    //method to log the user in
     public boolean loginUser(String newUser, String newPassword) {
         return this.UserName.equals(newUser) && this.Password.equals(newPassword);
     }
 
-    //Method to return the login status and the user's details
-    public String returnLoginStatus(String newUser, String newPassword) {
+    public boolean returnLoginStatus(String newUser, String newPassword) {
         if (loginUser(newUser, newPassword)) {
-            System.out.println("Welcome, " + FName + " " + SName + ". It is great to see you again.");
-            System.out.println("\nUser Details: \n Name: " + FName + " " + SName + "\n Username: " + UserName + "\n Phone Number: " + PhoneNum);
-
+            JOptionPane.showMessageDialog(null, "Welcome, " + FName + " " + SName + ". It is great to see you again.\n\nUser Details:\nName: " + FName + " " + SName + "\nUsername: " + UserName + "\nPhone Number: " + PhoneNum);
+            return true;
         } else {
-            System.out.println("Username or password is incorrect, please try again.");
+            JOptionPane.showMessageDialog(null, "Username or password is incorrect, please try again.");
+            return false;
         }
-        return "\nWhat would you like to do today? ";
     }
+
     public String getFName() {
         return FName;
     }
