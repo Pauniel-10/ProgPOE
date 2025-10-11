@@ -1,23 +1,31 @@
-import javax.swing.JOptionPane;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        Scanner reader = new Scanner(System.in);
 
         // Registration
-        Login user = Login.registerUser();
+        Login user = Login.registerUser(reader);
 
         // Login
-        String loginUsername = JOptionPane.showInputDialog("Enter Username:");
-        if (loginUsername == null) System.exit(0);
+        boolean loggedIn = false;
+        while (!loggedIn) {
+            System.out.print("Enter Username: ");
+            String loginUsername = reader.nextLine();
+            System.out.print("Enter Password: ");
+            String loginPassword = reader.nextLine();
 
-        String loginPassword = JOptionPane.showInputDialog("Enter Password:");
-        if (loginPassword == null) System.exit(0);
-
-        if (user.returnLoginStatus(loginUsername, loginPassword)) {
-            Message.startChat(); // Start Quickchat if login succeeds
-        } else {
-            JOptionPane.showMessageDialog(null, "Login failed. Exiting program.");
-            System.exit(0);
+            if (user.returnLoginStatus(loginUsername, loginPassword)) {
+                loggedIn = true;
+            } else {
+                System.out.println("Login failed. Try again.");
+            }
         }
+
+        // Welcome Message
+        System.out.println("\nWelcome to QuickChat.");
+
+        // Start QuickChat menu
+        Message.startChat(reader);
     }
 }

@@ -1,4 +1,4 @@
-import javax.swing.JOptionPane;
+import java.util.Scanner;
 
 public class Login {
     private final String FName;
@@ -29,43 +29,45 @@ public class Login {
         return PhoneNum.matches("^\\+\\d{1,3}\\d{1,10}$");
     }
 
-    public static Login registerUser() {
-        String FName = JOptionPane.showInputDialog("Enter First Name:");
-        if (FName == null) System.exit(0);
+    public static Login registerUser(Scanner reader) {
+        while (true) {
+            System.out.println("====== Register here =======");
+            System.out.println("Enter First Name: ");
+            String FName = reader.nextLine();
+            System.out.println("Enter Surname: ");
+            String SName = reader.nextLine();
+            System.out.println("------------------------------------------------\n -Username must contain '_'\n -Username must be no longer than 5 characters\n------------------------------------------------");
+            System.out.println("Enter Username: ");
+            String UserName = reader.nextLine();
+            System.out.println("------------------------------------------------\n -Password must be at least 8 characters long\n -Password must contain a capital letter\n -Password must contain a number\n -Password must contain a special character\n------------------------------------------------");
+            System.out.println("Enter Password: ");
+            String Password = reader.nextLine();
+            System.out.println("------------------------------------------------\n -Phone number must contain international code, eg +27\n -No more than 10 characters long\n------------------------------------------------");
+            System.out.println("Enter phone number: ");
+            String PhoneNum = reader.nextLine();
 
-        String SName = JOptionPane.showInputDialog("Enter Surname:");
-        if (SName == null) System.exit(0);
+            Login user = new Login(FName, SName, UserName, Password, PhoneNum);
 
-        String UserName = JOptionPane.showInputDialog(
-                "Enter Username:\n- Must contain '_'\n- Max 5 characters"
-        );
-        if (UserName == null) System.exit(0);
-
-        String Password = JOptionPane.showInputDialog(
-                "Enter Password:\n- Min 8 characters\n- 1 capital letter\n- 1 number\n- 1 special character"
-        );
-        if (Password == null) System.exit(0);
-
-        String PhoneNum = JOptionPane.showInputDialog(
-                "Enter Phone Number:\n- Must contain international code (e.g., +27)\n- Max 10 digits after code"
-        );
-        if (PhoneNum == null) System.exit(0);
-
-        Login user = new Login(FName, SName, UserName, Password, PhoneNum);
-
-        if (!user.checkUserName())
-            JOptionPane.showMessageDialog(null,
-                    "Username incorrectly formatted. Must contain '_' and max 5 chars.");
-        if (!user.checkPasswordComplexity())
-            JOptionPane.showMessageDialog(null,
-                    "Password incorrectly formatted. Ensure complexity requirements.");
-        if (!user.checkCellPhoneNumber())
-            JOptionPane.showMessageDialog(null,
-                    "Cell phone number incorrectly formatted.");
-        else
-            JOptionPane.showMessageDialog(null, "Registration successful, please login");
-
-        return user;
+            boolean valid = true;
+            if (!user.checkUserName()) {
+                System.out.println("Username is not correctly formatted, please ensure that your username contains an underscore and is no more than five characters in length.");
+                valid = false;
+            }
+            if (!user.checkPasswordComplexity()) {
+                System.out.println(" Password is not correctly formatted, please ensure that the password is at least eight characters, a capital letter, a number, and a special character.");
+                valid = false;
+            }
+            if (!user.checkCellPhoneNumber()) {
+                System.out.println("Cell phone number incorrectly formatted or does not contain international code.");
+                valid = false;
+            }
+            if (valid) {
+                System.out.println("Registration successful, please login");
+                return user;
+            } else {
+                System.out.println("Registration failed. Please try again.\n");
+            }
+        }
     }
 
     public boolean loginUser(String newUser, String newPassword) {
@@ -74,15 +76,15 @@ public class Login {
 
     public boolean returnLoginStatus(String newUser, String newPassword) {
         if (loginUser(newUser, newPassword)) {
-            JOptionPane.showMessageDialog(null,
+            System.out.println(
                     "Welcome, " + FName + " " + SName + ". It is great to see you again.\n" +
                             "User Details:\nName: " + FName + " " + SName +
-                            "\nUsername: " + UserName + "\nPhone: " + PhoneNum);
+                            "\nUsername: " + UserName + "\nPhone: " + PhoneNum
+            );
             return true;
         } else {
-            JOptionPane.showMessageDialog(null, "Username or password is incorrect.");
+            System.out.println("Username or password is incorrect.");
             return false;
         }
     }
-
 }
