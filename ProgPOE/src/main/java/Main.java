@@ -10,7 +10,8 @@ public class Main {
         // A loop that will keep looping until the correct login details are entered
         boolean loggedIn = false;
         while (!loggedIn) {
-            System.out.print("Enter Username: ");
+            System.out.print("\n====== Login here =======");
+            System.out.print("\nEnter Username: ");
             String loginUsername = reader.nextLine();
             System.out.print("Enter Password: ");
             String loginPassword = reader.nextLine();

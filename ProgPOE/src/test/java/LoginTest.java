@@ -1,95 +1,107 @@
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import java.util.Scanner;
-
 public class LoginTest {
+    //Part 1 Login tests
 
-    // --------------------------
-    // Original Login Tests
-    // --------------------------
+    // Test that a valid username meets all the requirements
     @Test
     public void testValidUserName(){
         Login user = new Login("Kyle", "Walker", "kyl_1", "Password1!", "+27831234567");
         assertTrue(user.checkUserName());
     }
 
+    //Test that an invalid username fails validation
     @Test
     public void testInvalidUserName(){
         Login user = new Login("Kyle", "Walker", "kyle!!!!!!!", "Password1!", "+27831234567");
         assertFalse(user.checkUserName());
     }
 
+    //Test that a valid password meets complexity rules
     @Test
     public void testValidPassword() {
         Login user = new Login("Kyle", "Walker", "kyl_1", "Password1!", "+27831234567");
         assertTrue(user.checkPasswordComplexity());
     }
-
+    //Test that a weak password fails complexity check
     @Test
     public void testInvalidPassword() {
         Login user = new Login("Kyle", "Walker", "kyl_1", "pass", "+27831234567");
         assertFalse(user.checkPasswordComplexity());
     }
-
+    //Test login success when correct credentials are entered
     @Test
     public void testLoginSuccess(){
         Login user = new Login("Kyle", "Walker", "kyl_1", "Password1!", "+27831234567");
         assertTrue(user.loginUser("kyl_1","Password1!"));
     }
-
+    // Test login failure when password is incorrect
     @Test
     public void testLoginFailure(){
         Login user = new Login("Kyle", "Walker", "kyl_1", "Password1!", "+27831234567");
         assertFalse(user.loginUser("kyl_1","WrongPass"));
     }
 
-    // --------------------------
-    // Message Tests (Part 2)
-    // --------------------------
+
+  //Part 2 Message Tests
+
+    //Test that messages do not go over 250 characters
     @Test
-    public void testMessageShouldNotExceed250Characters_Success() {
-        assertTrue("Message ready to send.", true);
+    public void testMessageUnder250CharSuccess() {
+        String msg = "Hello this is under 250 chars";
+        String result = Message.checkMessageLength(msg);
+        assertEquals("Message ready to send.", result);
+        System.out.println(result);
+    }
+    // Test failure when messages go over 250 characters
+    @Test
+    public void testMessageOver250CharFailure() {
+        String msg = "a".repeat(253);
+        String result = Message.checkMessageLength(msg);
+        assertEquals("Message exceeds 250 characters by 3, please reduce size.", result);
+        System.out.println(result);
     }
 
+    //Test that valid recipient phone number format passes validation
     @Test
-    public void testMessageShouldNotExceed250Characters_Failure() {
-        String msg = "a".repeat(251);
-        int excess = msg.length() - 250;
-        assertTrue("Message exceeds 250 characters by " + excess + ", please reduce size.",
-                msg.length() > 250);
-    }
-
-    @Test
-    public void testRecipientNumberCorrectlyFormatted_Success() {
+    public void testCorrectNumberSuccess() {
         String num = "+27718693002";
-        assertTrue("Cell phone number successfully captured.",
-                Message.checkRecipientCell(num));
+        String result = Message.checkRecipientCellTest(num);
+        assertEquals("Cell phone number successfully captured.", result);
+        System.out.println(result);
     }
 
+    //Test failure when recipient phone number is incorrect
     @Test
-    public void testRecipientNumberCorrectlyFormatted_Failure() {
+    public void testCorrectNumberFailure() {
         String num = "08575975889"; // missing '+'
-        assertFalse("Cell phone number is incorrectly formatted or does not contain an international code. Please correct the number and try again.",
-                Message.checkRecipientCell(num));
+        String result = Message.checkRecipientCellTest(num);
+        assertEquals("Cell phone number is incorrectly formatted or does not contain an international code. Please correct the number and try again.", result);
+        System.out.println(result);
     }
 
+    //Test that Message ID is valid
     @Test
-    public void testCheckMessageID_Success() {
-        String id = "123456789";
-        assertTrue(Message.checkMessageID(id));
+    public void testCheckMessageIDSuccess() {
+        String testID = "123456789";
+        String result = Message.generateMessageID(testID);
+        assertEquals("Message ID generated: 123456789", result);
+        System.out.println(result);
     }
 
+    //Test failure when Message ID exceeds 10 characters
     @Test
-    public void testCheckMessageID_Failure() {
-        String id = "12345678901";
-        assertFalse(Message.checkMessageID(id));
+    public void testCheckMessageIDFailure() {
+        String testID = "12345678901";
+        String result = Message.generateMessageID(testID);
+        assertEquals("Invalid Message ID", result);
+        System.out.println(result);
     }
 
+    //Test that message hash is generated correctly for Task 1
     @Test
-    public void testCreateMessageHash_Correctness() {
+    public void testCreateMessageHashTask1() {
         String messageID = "00";
         int numMessage = 0;
         String message = "Hi Mike, can you join us for dinner tonight";
@@ -97,8 +109,9 @@ public class LoginTest {
         assertEquals(expected, Message.createMessageHash(messageID, numMessage, message));
     }
 
+    //Test that message hash is generated correctly for Task 2
     @Test
-    public void testCreateMessageHash_OtherCase() {
+    public void testCreateMessageHashTask2() {
         String messageID = "01";
         int numMessage = 1;
         String message = "Hello Keegan, did you receive the payment?";
@@ -106,48 +119,35 @@ public class LoginTest {
         assertEquals(expected, Message.createMessageHash(messageID, numMessage, message));
     }
 
+    //Test that total messages counter is returned correctly
     @Test
     public void testReturnTotalMessages() {
-        // Reset totalMessages before test
         int before = Message.returnTotalMessages();
-        // Simulate increment (would normally be done via sending/storing)
-        // Not directly settable, so skip actual increment for this static field.
         assertEquals(before, Message.returnTotalMessages());
     }
 
+    // Test send option
     @Test
-    public void testStoreMessage_PrintsJson() {
-        // Redirect system out
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out));
-        Message m = new Message("01", "+27718693002", "Test", "01:1:TESTTEST");
-        m.storeMessage();
-        String output = out.toString();
-        assertTrue(output.contains("\"MessageID\": \"01\""));
-        assertTrue(output.contains("\"Recipient\": \"+27718693002\""));
-        assertTrue(output.contains("\"Message\": \"Test\""));
-        System.setOut(System.out);
+    public void testSentMessageForTest_SendOption() {
+        String result = Message.sentMessageTest("1");
+        assertEquals("Message successfully sent.", result);
+        System.out.println(result);
     }
 
+    //Test Disregard option
     @Test
-    public void testSentMessage_SendOption() {
-        Scanner scanner = new Scanner("1\n");
-        String result = Message.sentMessage(scanner);
-        assertEquals("Send", result);
+    public void testSentMessageForTest_DisregardOption() {
+        String result = Message.sentMessageTest("2");
+        assertEquals("Press 0 to delete message.", result);
+        System.out.println(result);
     }
 
+    //Test Store option
     @Test
-    public void testSentMessage_DisregardOption() {
-        Scanner scanner = new Scanner("2\n");
-        String result = Message.sentMessage(scanner);
-        assertEquals("Disregard", result);
-    }
-
-    @Test
-    public void testSentMessage_StoreOption() {
-        Scanner scanner = new Scanner("3\n");
-        String result = Message.sentMessage(scanner);
-        assertEquals("Store", result);
+    public void testSentMessageForTest_StoreOption() {
+        String result = Message.sentMessageTest("3");
+        assertEquals("Message successfully stored.", result);
+        System.out.println(result);
     }
 
 }

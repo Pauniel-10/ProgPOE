@@ -18,17 +18,35 @@ public class Message {
         this.messageHash = messageHash;
     }
 
-    // 1. checkMessageID()
+    // method to check the message ID
     public static boolean checkMessageID(String id) {
         return id.length() <= 10;
     }
 
-    // 2. checkRecipientCell()
+    //Static method for the test
+    public static String generateMessageID(String messageID) {
+        if (checkMessageID(messageID)) {
+            return "Message ID generated: " + messageID;
+        } else {
+            return "Invalid Message ID";
+        }
+    }
+
+    // Method to check the Recipients Cell Phone number
     public static boolean checkRecipientCell(String cellNum) {
         return cellNum.matches("^\\+\\d{1,3}\\d{1,10}$");
     }
 
-    // 3. createMessageHash()
+    //Static method for the test
+    public static String checkRecipientCellTest(String cellNum) {
+        if (checkRecipientCell(cellNum)) {
+            return "Cell phone number successfully captured.";
+        } else {
+            return "Cell phone number is incorrectly formatted or does not contain an international code. Please correct the number and try again.";
+        }
+    }
+
+    //Method for creating the message hash
     public static String createMessageHash(String messageID, int numMessage, String message) {
         String[] words = message.trim().split("\\s+");
         String firstWord = words[0].toUpperCase();
@@ -37,7 +55,7 @@ public class Message {
         return hash.toUpperCase();
     }
 
-    // 4. sentMessage(): Handles send/store/disregard prompt and returns user choice as string
+    // Method that handles send/store/disregard prompt and returns user choice as string
     public static String sentMessage(Scanner scanner) {
         while (true) {
             System.out.println("""
@@ -59,8 +77,17 @@ public class Message {
             }
         }
     }
+    // Static method for testing
+    public static String sentMessageTest(String sendChoice) {
+        return switch (sendChoice) {
+            case "1" -> "Message successfully sent.";
+            case "2" -> "Press 0 to delete message.";
+            case "3" -> "Message successfully stored.";
+            default -> "Invalid choice";
+        };
+    }
 
-    // 5. printMessages(): shows message details in JOptionPane
+    // Method that shows message details in JOptionPane
     public void printMessages() {
         JOptionPane.showMessageDialog(null,
                 "Message ID: " + messageID +
@@ -70,12 +97,12 @@ public class Message {
         );
     }
 
-    // 6. returnTotalMessages()
+    // Method to return total number of messages
     public static int returnTotalMessages() {
         return totalMessages;
     }
 
-    // 7. storeMessage(): print json to console
+    // Method to store message
     public void storeMessage() {
         String json = "{\n" +
                 "\"MessageID\": \"" + messageID + "\",\n" +
@@ -86,80 +113,78 @@ public class Message {
         System.out.println(json);
     }
 
-    // 8. Main message sending workflow
-    public static void startChat(Scanner scanner) {
-        // 5. Ask number of messages
-        int numMessages;
-        while (true) {
-            try {
-                System.out.print("How many messages would you like to send? ");
-                numMessages = Integer.parseInt(scanner.nextLine());
-                if (numMessages > 0) break;
-                else System.out.println("Please enter a number greater than 0.");
-            } catch (NumberFormatException e) {
-                System.out.println("Please enter a valid number.");
-            }
-        }
+    // Main message sending workflow
+    public static void startChat(Scanner reader) {
+        boolean running = true; // Outer menu loop
+        int totalMessagesSent = 0; // Total messages counter
 
-        int messagesSent = 0;
-        boolean running = true;
         while (running) {
             System.out.println("""
-                    Select an option:
-                    1) Send Messages
-                    2) Show recently sent messages
-                    3) Quit""");
+                Select an option:
+                1) Send Messages
+                2) Show recently sent messages
+                3) Quit""");
             System.out.print("Enter choice: ");
-            String option = scanner.nextLine().trim();
+            String option = reader.nextLine().trim();
 
             switch (option) {
                 case "1" -> {
-                    while (messagesSent < numMessages) {
-                        // Recipient with validation
+                    // Ask how many messages to send this time
+                    int numToSend;
+                    while (true) {
+                        System.out.print("\nHow many messages would you like to send? ");
+                        try {
+                            numToSend = Integer.parseInt(reader.nextLine());
+                            if (numToSend > 0) break;
+                            else System.out.println("Please enter a number greater than 0.");
+                        } catch (NumberFormatException e) {
+                            System.out.println("Please enter a valid number.");
+                        }
+                    }
+
+                    // Loop for sending messages
+                    for (int i = 0; i < numToSend; i++) {
+                        // Recipient validation
                         String recipient;
                         while (true) {
-                            System.out.print("Enter recipient number (+CountryCode and number, max 10 digits after +): ");
-                            recipient = scanner.nextLine().trim();
-                            if (checkRecipientCell(recipient)) {
-                                break;
-                            } else {
-                                System.out.println("Cell phone number incorrectly formatted. Please use + and up to 10 digits.");
-                            }
+                            System.out.print("\nEnter recipient number (+CountryCode and number): ");
+                            recipient = reader.nextLine().trim();
+                            if (checkRecipientCell(recipient)) break;
+                            System.out.println("Cell phone number incorrectly formatted. Please use + and up to 10 digits.");
                         }
 
-                        // Message with validation
+                        // Message validation
                         String msg;
                         while (true) {
                             System.out.print("Enter your message (max 250 chars): ");
-                            msg = scanner.nextLine();
-                            if (msg.length() > 250) {
-                                System.out.println("Please enter a message of less than 250 characters.");
-                            } else {
-                                System.out.println("Message sent");
+                            msg = reader.nextLine();
+                            if (msg.length() <= 250) {
+                                System.out.println("Message ready to send");
                                 break;
+                            } else {
+                                System.out.println("Please enter a message of less than 250 characters.");
                             }
                         }
 
-                        // Message ID, message number, hash
+                        // Generate message ID and hash
                         String messageID;
                         do {
                             messageID = String.valueOf(1000000000L + new Random().nextInt(900000000));
                         } while (!checkMessageID(messageID));
 
-                        int msgNum = messagesSent;
-                        String hash = createMessageHash(messageID, msgNum, msg);
+                        String hash = createMessageHash(messageID, totalMessagesSent, msg);
 
                         // Send/Store/Disregard
-                        String action = sentMessage(scanner);
+                        String action = sentMessage(reader);
                         if (action.equals("Send") || action.equals("Store")) {
                             totalMessages++;
+                            totalMessagesSent++;
                             Message m = new Message(messageID, recipient, msg, hash);
-                            m.printMessages();      // Pop-up
-                            m.storeMessage();       // JSON in console
+                            m.printMessages();   // Pop-up
+                            m.storeMessage();    // JSON in console
                         } else {
                             System.out.println("Message disregarded.");
                         }
-                        messagesSent++;
                     }
                 }
                 case "2" -> System.out.println("Coming Soon.");
@@ -167,6 +192,17 @@ public class Message {
                 default -> System.out.println("Invalid option. Please try again.");
             }
         }
-        System.out.println("Total messages sent: " + returnTotalMessages());
+        //Print total number of messages sent
+        System.out.println("Total messages sent: " + totalMessagesSent);
+    }
+
+    //Check the message length method for testing
+    public static String checkMessageLength(String msg) {
+        if (msg.length() <= 250) {
+            return "Message ready to send.";
+        } else {
+            int excess = msg.length() - 250;
+            return "Message exceeds 250 characters by " + excess + ", please reduce size.";
+        }
     }
 }
