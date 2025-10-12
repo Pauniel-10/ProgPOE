@@ -9,6 +9,7 @@ public class LoginTest {
     public void testValidUserName(){
         Login user = new Login("Kyle", "Walker", "kyl_1", "Password1!", "+27831234567");
         assertTrue(user.checkUserName());
+
     }
 
     //Test that an invalid username fails validation
@@ -43,8 +44,34 @@ public class LoginTest {
         assertFalse(user.loginUser("kyl_1","WrongPass"));
     }
 
+    //Phone number tests
+    @Test
+    public void testValidPhoneNumber() {
+        Login user = new Login("Kyle", "Walker", "kyl_1", "Password1!", "+27831234567");
+        assertTrue(user.checkCellPhoneNumber());
+    }
 
-  //Part 2 Message Tests
+    @Test
+    public void testInvalidPhoneNumberTooLong() {
+        Login user = new Login("Kyle", "Walker", "kyl_1", "Password1!", "+2783123456789");
+        assertFalse(user.checkCellPhoneNumber());
+    }
+
+    @Test
+    public void testInvalidPhoneNumberWrongPrefix() {
+        Login user = new Login("Kyle", "Walker", "kyl_1", "Password1!", "+1234567890");
+        assertFalse(user.checkCellPhoneNumber());
+    }
+
+    @Test
+    public void testInvalidPhoneNumberNonDigits() {
+        Login user = new Login("Kyle", "Walker", "kyl_1", "Password1!", "+27ABC123456");
+        assertFalse(user.checkCellPhoneNumber());
+    }
+
+
+
+    //Part 2 Message Tests
 
     //Test that messages do not go over 250 characters
     @Test

@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 public class Login {
     private final String FName;
     private final String SName;
@@ -15,65 +13,39 @@ public class Login {
         this.PhoneNum = PhoneNum;
     }
 
+    //Method that checks the username
     public boolean checkUserName() {
         return UserName.contains("_") && UserName.length() <= 5;
     }
 
+    //Method that check that the password matches the requirements
     public boolean checkPasswordComplexity() {
         return Password.length() >= 8 && Password.matches(".*[A-Z].*") &&
                 Password.matches(".*[0-9].*") &&
                 Password.matches(".*[!@#$%^&*(),.?\":{}|<>].*");
     }
 
+    //Method checks if the phone number specifically begins with +27 and is no longer than 12 characters which should only be digits
     public boolean checkCellPhoneNumber() {
-        return PhoneNum.matches("^\\+\\d{1,3}\\d{1,10}$");
-    }
-
-    public static Login registerUser(Scanner reader) {
-        while (true) {
-            System.out.println("====== Register here =======");
-            System.out.println("Enter First Name: ");
-            String FName = reader.nextLine();
-            System.out.println("Enter Surname: ");
-            String SName = reader.nextLine();
-            System.out.println("------------------------------------------------\n -Username must contain '_'\n -Username must be no longer than 5 characters\n------------------------------------------------");
-            System.out.println("Enter Username: ");
-            String UserName = reader.nextLine();
-            System.out.println("------------------------------------------------\n -Password must be at least 8 characters long\n -Password must contain a capital letter\n -Password must contain a number\n -Password must contain a special character\n------------------------------------------------");
-            System.out.println("Enter Password: ");
-            String Password = reader.nextLine();
-            System.out.println("------------------------------------------------\n -Phone number must contain international code, eg +27\n -No more than 10 characters long\n------------------------------------------------");
-            System.out.println("Enter phone number: ");
-            String PhoneNum = reader.nextLine();
-
-            Login user = new Login(FName, SName, UserName, Password, PhoneNum);
-
-            boolean valid = true;
-            if (!user.checkUserName()) {
-                System.out.println("Username is not correctly formatted, please ensure that your username contains an underscore and is no more than five characters in length.");
-                valid = false;
-            }
-            if (!user.checkPasswordComplexity()) {
-                System.out.println(" Password is not correctly formatted, please ensure that the password is at least eight characters, a capital letter, a number, and a special character.");
-                valid = false;
-            }
-            if (!user.checkCellPhoneNumber()) {
-                System.out.println("Cell phone number incorrectly formatted or does not contain international code.");
-                valid = false;
-            }
-            if (valid) {
-                System.out.println("Registration successful, please login");
-                return user;
-            } else {
-                System.out.println("Registration failed. Please try again.\n");
-            }
+        // Must start with +27
+        if (!PhoneNum.startsWith("+27")) {
+            return false;
         }
+        // Max length 12 (+27 plus up to 9 digits)
+        if (PhoneNum.length() > 12) {
+            return false;
+        }
+        // Check that everything after +27 are digits
+        String numberPart = PhoneNum.substring(3);
+        return numberPart.matches("\\d+");
     }
 
+    //Method to log the user in
     public boolean loginUser(String newUser, String newPassword) {
         return this.UserName.equals(newUser) && this.Password.equals(newPassword);
     }
 
+    //Method to return the login status
     public boolean returnLoginStatus(String newUser, String newPassword) {
         if (loginUser(newUser, newPassword)) {
             System.out.println(
