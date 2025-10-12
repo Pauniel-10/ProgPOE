@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class Message {
     private static int totalMessages = 0;
 
-    // Instance fields for message info
+    // Instance fields
     private final String messageID;
     private final String recipient;
     private final String message;
