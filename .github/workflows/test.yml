@@ -1,4 +1,4 @@
-name: Java CI - Login & Message Tests
+name: Java Maven Tests
 
 on:
   push:
@@ -7,33 +7,27 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
-
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
+    # Step 1: Checkout the repository
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Set up JDK 17
+    # Step 2: Set up Java
+    - name: Set up Java 17
       uses: actions/setup-java@v3
       with:
-        java-version: 17
-        distribution: temurin
+        java-version: '17'
+        distribution: 'temurin'
 
-    - name: Cache Maven packages
-      uses: actions/cache@v3
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
-
-    - name: Build project
+    # Step 3: Build the project with Maven
+    - name: Build with Maven
+      working-directory: ProgPOE   # <-- update this if pom.xml is elsewhere
       run: mvn clean compile
 
-    - name: Run LoginTest
-      run: mvn -Dtest=LoginTest test
-
-    - name: Run MessageTest
-      run: mvn -Dtest=MessageTest test
+    # Step 4: Run all tests
+    - name: Run Maven Tests
+      working-directory: ProgPOE   # <-- same folder as pom.xml
+      run: mvn test
