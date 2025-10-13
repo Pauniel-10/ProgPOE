@@ -68,6 +68,4 @@ public class LoginTest {
         Login user = new Login("Kyle", "Walker", "kyl_1", "Password1!", "+27ABC123456");
         assertFalse(user.checkCellPhoneNumber());
     }
-
-
 }
