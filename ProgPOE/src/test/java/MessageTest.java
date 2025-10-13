@@ -2,10 +2,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class MessageTest {
-
     //Part 2 Message Tests
-    //Part 2 Message Tests
-
     //Test that messages do not go over 250 characters
     @Test
     public void testMessageUnder250CharSuccess() {
