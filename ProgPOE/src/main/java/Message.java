@@ -2,7 +2,7 @@ import javax.swing.JOptionPane;
 import java.util.Scanner;
 
 public class Message {
-    private static final int totalMessages = 0;
+    private static int totalMessages = 0;
 
     // Instance fields
     private final String messageID;
@@ -17,7 +17,21 @@ public class Message {
         this.messageHash = messageHash;
     }
 
-    // method to check the message ID
+    // method to generate the message ID
+    public Message(String recipient, String message) {
+        this.recipient = recipient; // phone number, not name
+        this.message = message;
+        totalMessages++;
+
+        // Create message ID using phone number and loop counter
+        String numPart = recipient.substring(1, 3); // gets '27' from '+27...'
+        String msgPart = message.substring(0, 2).toUpperCase();
+        this.messageID = numPart + totalMessages + msgPart;
+
+        this.messageHash = createMessageHash(this.messageID, totalMessages, message);
+    }
+
+    // Method to check message ID format (for JUnit)
     public static boolean checkMessageID(String id) {
         return id.length() <= 10;
     }
@@ -109,7 +123,6 @@ public class Message {
                 "\"Recipient\": \"" + recipient + "\",\n" +
                 "\"Message\": \"" + message + "\"\n" +
                 "}";
-        System.out.println(json);
     }
 
     //Check the message length method for testing

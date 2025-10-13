@@ -85,7 +85,7 @@ public class MessageTest {
 
     // Test send option
     @Test
-    public void testSentMessageForTest_SendOption() {
+    public void testSentMessageSend() {
         String result = Message.sentMessageTest("1");
         assertEquals("Message successfully sent.", result);
         System.out.println(result);
@@ -93,7 +93,7 @@ public class MessageTest {
 
     //Test Disregard option
     @Test
-    public void testSentMessageForTest_DisregardOption() {
+    public void testSentMessageDisregard() {
         String result = Message.sentMessageTest("2");
         assertEquals("Press 0 to delete message.", result);
         System.out.println(result);
@@ -101,7 +101,7 @@ public class MessageTest {
 
     //Test Store option
     @Test
-    public void testSentMessageForTest_StoreOption() {
+    public void testSentMessageStore() {
         String result = Message.sentMessageTest("3");
         assertEquals("Message successfully stored.", result);
         System.out.println(result);
