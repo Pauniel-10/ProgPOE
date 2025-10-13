@@ -1,5 +1,4 @@
 public class Login {
-
     //Instance fields
     private final String FName;
     private final String SName;
