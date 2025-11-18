@@ -174,219 +174,160 @@ What would you like to do today?
 
 ---
 
-Perfect 👍 here’s **Part 2** written to **match your Part 1 style exactly** — same structure, tone, and formatting.
-You can paste this directly **below Part 1** in your README file.
-
----
-
 ## Part 2 – QuickChat Messaging System
+## **Overview**
 
-This part of the project expands on the login and registration system by introducing **QuickChat**, a simple **Java-based messaging system** that allows users to send, store, or disregard messages after logging in.
+QuickChat is a console-based Java messaging application that allows users to:
 
-QuickChat simulates a basic chat interface within the console and continues running until the user chooses to quit.
+* Register and login with secure credentials.
+* Send messages to recipients.
+* Store messages in JSON format.
+* Validate usernames, passwords, phone numbers, message length, and message IDs.
+* Track the total number of messages sent.
 
----
-
-## Message Rules
-
-* **Recipient Number**:
-  Must begin with `+27`, contain only digits after the prefix, and be no longer than **12 characters** in total.
-  *(e.g., `+27731234567` is valid)*
-
-* **Message Length**:
-  Each message must be **250 characters or fewer**.
-
-* **Message ID and Hash**:
-  Each message is automatically assigned a unique ID and a hash value that combines the ID, message number, and first and last words of the message.
+This update reflects the latest version of the program, including improved phone number validation, message storage, and message handling workflows.
 
 ---
 
-## Functionality
+## **File Structure**
 
-* **Send Message**:
-  Allows the user to enter a recipient number and message, validates both, and sends the message.
-
-* **Store Message**:
-  Saves the message for later sending.
-
-* **Disregard Message**:
-  Cancels the current message.
-
-* **Message Summary**:
-  After each message, details are displayed in both a **JOptionPane pop-up** and as formatted JSON in the console.
-
-* **Session Control**:
-  The program continues running until the user selects the “Quit” option.
+| File               | Description                                                                                                                              |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `Main.java`        | Main entry point of the program. Handles registration, login, and the main menu for sending, storing, and managing messages.             |
+| `Login.java`       | Handles user registration, validation, and login logic. Validates username, password, and phone number format.                           |
+| `Message.java`     | Handles message creation, message ID/hash generation, recipient validation, storage to JSON, and message length checks.                  |
+| `LoginTest.java`   | JUnit tests for login-related functionality (username, password, phone number validation, login success/failure).                        |
+| `MessageTest.java` | JUnit tests for message-related functionality (message length, recipient validation, message ID/hash, and send/store/disregard options). |
 
 ---
 
-## Project Structure
+## **Features**
 
-```
-├── Login.java         # Handles registration and login
-├── Message.java       # Handles message creation, validation, and sending
-├── Main.java          # Controls program flow (login + QuickChat menu)
-├── LoginTest.java     # Tests for login functionality
-├── MessageTest.java   #Tests for message functionality
-```
+### **Registration**
 
----
+* **Username**: Must contain `_` and be no longer than 5 characters.
+* **Password**: Must be at least 8 characters and include:
 
-## Implementation Notes / Code Explanation
+  * At least one capital letter.
+  * At least one number.
+  * At least one special character.
+* **Phone Number**: Must start with `+27` and be no longer than 12 characters, containing only digits.
 
-QuickChat is implemented in **message.java** and integrated through the **main.java** class.
+### **Login**
 
-**1. ` Message.java` – Message Class**
+* Users log in using their registered username and password.
+* On successful login, a personalized welcome message is displayed with user details.
 
-* **Purpose**: Handles all logic related to creating, validating, and managing messages.
+### **Messaging**
 
-* **Attributes**:
+* **Send Messages**: Users can specify how many messages to send in a session.
+* **Message Validation**:
 
-  * `messageID` – A unique ID for each message.
-  * `recipient` – The receiver’s phone number (validated).
-  * `message` – The message content.
-  * `messageHash` – A generated code based on the message details.
-
-* **Key Methods**:
-
-  * `checkMessageID()` → Ensures the message ID does not exceed 10 characters.
-  * `checkRecipientCell()` → Validates that the number starts with `+27` and contains only digits (max length 12).
-  * `checkMessageLength()` → Confirms message is ≤ 250 characters.
-  * `createMessageHash()` → Builds a hash from message ID, count, and first/last words.
-  * `sentMessage()` → Asks the user to choose Send / Store / Disregard.
-  * `printMessages()` → Displays the message details in a pop-up window.
-  * `storeMessage()` → Prints message information in JSON format to the console.
-  * `startChat()` → Displays the QuickChat menu and manages the user interaction loop.
-
-**2. `Main.java` – Main Program**
-
-* Launches after successful login.
-* Displays the QuickChat main menu with the following options:
-
-  1. Send Messages
-  2. Show Recently Sent Messages
-  3. Quit
-* Continues running until the user selects **Quit**, allowing multiple messages per session.
+  * Maximum 250 characters.
+  * Recipient number must start with `+27` and contain up to 10 digits.
+  * Message IDs must be ≤ 10 characters.
+* **Message Hash**: Generated using the message ID, message number, and first/last words of the message.
+* **Store Messages**: Messages can be stored in `messages.json` for later retrieval.
+* **Display Messages**: Sent or stored messages are displayed in a `JOptionPane` popup.
 
 ---
 
-## Example Run
+## **JUnit Testing**
 
-```
-How many messages would you like to send? 
-1
-Select an option:
-1) Send Messages
-2) Show recently sent messages
-3) Quit
-Enter choice: 1
+### **Login Tests (`LoginTest.java`)**
 
-Enter recipient number (+CountryCode and number): +27746440099
-Enter your message (max 250 chars): Hi how are you doing
-Message ready to send
-Select:
-1) Send Message
-2) Disregard Message
-3) Store Message to send later
-Enter choice: 1
-{
-"MessageID": "1283144317",
-"MessageHash": "12:0:HIDOING",
-"Recipient": "+27746440099",
-"Message": "Hi how are you doing"
-}
-Select an option:
-1) Send Messages
-2) Show recently sent messages
-3) Quit
-Enter choice: 3
-Total messages sent: 1
-```
+* **Username Validation**:
 
----
+  * Valid username passes.
+  * Invalid username fails.
+* **Password Validation**:
 
-## Example Test Cases
+  * Valid password passes.
+  * Weak password fails.
+* **Login Validation**:
 
-* ✅ Valid Recipient: `+27741234567` → Passes
-* ❌ Invalid Recipient: `0712345678` → Fails
-* ✅ Valid Message: `"Hope you’re well!"` → Passes
-* ❌ Invalid Message: Message over 250 characters → Fails
-* ✅ Valid Option: `1 → Send Message`
-* ✅ Loop continues until user selects `3 → Quit`
+  * Correct credentials pass.
+  * Incorrect credentials fail.
+* **Phone Number Validation**:
+
+  * Valid `+27` number passes.
+  * Too long, wrong prefix, or non-digit numbers fail.
+
+### **Message Tests (`MessageTest.java`)**
+
+* **Message Length Validation**:
+
+  * Under 250 characters passes.
+  * Over 250 characters fails.
+* **Recipient Number Validation**:
+
+  * Correct `+27` format passes.
+  * Incorrect formats fail.
+* **Message ID Validation**:
+
+  * Valid ID passes.
+  * ID over 10 characters fails.
+* **Message Hash Generation**:
+
+  * Hashes correctly generated for given input.
+* **Send/Disregard/Store Options**:
+
+  * Each option returns the correct response.
 
 ---
 
-## Where to Find the Files in the Folder
+## **How to Run**
 
-Open the **ProgPOE** folder, then navigate to **src**.
-Inside **main/java**, you’ll find the following files:
+### **Requirements**
 
-* `Main.java`
-* `Login.java`
-* `Message.java`
+* Java 17+ installed.
+* IDE (IntelliJ, Eclipse) or command-line compiler.
+* JUnit 4 for testing.
 
-In **test/java**, you’ll find:
+### **Running the Application**
 
-* `loginTest.java`
-* `MessageTest.java`
+1. Compile all Java files.
+2. Run `Main.java`.
+3. Follow the prompts for registration, login, and message handling.
 
----
+### **Running Tests**
 
-## How to Run
+1. Ensure JUnit 4 is added to the project.
+2. Run `LoginTest.java` and `MessageTest.java` in your IDE or using Maven:
 
 ```bash
-# Compile the files
-javac Login.java Message.java Main.java
+mvn test
 ```
-
-```bash
-# Run the program
-java org.example.Main
-```
-
-* Register and log in using the prompts.
-* After successful login, the **QuickChat** menu will appear.
-* Follow the prompts to send, store, or disregard messages.
-* Continue chatting until you choose to quit.
 
 ---
 
-## Example Message Output
+## **JSON Storage**
 
-When a message is sent or stored, details appear in the console as formatted JSON:
+* Stored messages are appended to `messages.json`.
+* JSON is generated only when `storeMessage()` is called.
+* Example:
 
-```
+```json
 {
-"MessageID": "1785642314",
-"MessageHash": "17:1:HELLOFRIEND",
-"Recipient": "+27731234567",
-"Message": "Hello friend"
+  "MessageID": "1283144317",
+  "MessageHash": "12:0:HIDOING",
+  "Recipient": "+27746440099",
+  "Message": "Hi how are you doing"
 }
 ```
 
 ---
 
-## Limitations & Known Issues
+## **Notes**
 
-* Stored messages are **not saved permanently** (data clears when program ends).
-* The “Show Recently Sent Messages” option is **not yet implemented**.
-* Message IDs are randomly generated but not guaranteed unique across sessions.
-
----
-
-## Future Improvements
-
-* Save sent messages to a text file or database.
-* Display message history under “Show Recently Sent Messages”.
-* Add JUnit tests for message validation and flow.
-* Introduce a simple **GUI chat window** for better user experience.
-* Allow multiple users and message threads.
+* Total message counter updates for every sent or stored message.
+* Pop-ups (`JOptionPane`) show details after sending or storing a message.
+* The application continues until the user chooses "Quit".
+* Phone numbers are strictly validated to start with `+27` and contain only digits after the prefix.
 
 ---
 
-## References
-
-* OpenAI. (2025). *ChatGPT (Sep 17 version)* [Large language model]. Available at: [https://chat.openai.com/](https://chat.openai.com/) (Accessed: 17 September 2025).
-
----
-
+## **References**
+* GeeksforGeeks. File Handling in Java. https://www.geeksforgeeks.org/file-handling-in-java-using-filewriter-filereader/ [Accessed 11 Oct. 2025].
+* OpenAI. ChatGPT (GPT-4/5) [Large Language Model]. https://chat.openai.com [Accessed 11 Oct. 2025].
+ 
