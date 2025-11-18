@@ -14,6 +14,8 @@ public class Login {
         this.PhoneNum = PhoneNum;
     }
 
+    public String getPhoneNum() { return PhoneNum; }
+
     //Method that checks the username
     public boolean checkUserName() {
         return UserName.contains("_") && UserName.length() <= 5;
