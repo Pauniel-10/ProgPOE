@@ -1,9 +1,6 @@
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/*
-MessageTest.java - unit tests for Part 2 validations and helpers
-*/
 public class MessageTest {
     @Test
     public void testMessageUnder250CharSuccess() {

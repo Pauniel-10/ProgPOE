@@ -2,12 +2,6 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/*
-MessageServicePart3Test.java
-
-Unit tests using arrays only (no java.util.List).
-Test data: messages 1-5 as per the assignment spec.
-*/
 public class MessageServiceTest {
 
     private MessageService svc;

@@ -142,10 +142,6 @@ public class MessageService {
         for (Message m : fromFile) addMessage(m, "Stored");
     }
 
-    /* -----------------------
-       Helper array utilities
-       ----------------------- */
-
     private Message[] appendMessage(Message[] arr, Message m) {
         Message[] n = new Message[arr.length + 1];
         System.arraycopy(arr, 0, n, 0, arr.length);

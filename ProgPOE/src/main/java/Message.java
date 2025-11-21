@@ -55,7 +55,7 @@ public class Message {
         return hash.toUpperCase();
     }
 
-    // Dialog-based send/store/disregard (used when QuickChat is open)
+    // send/store/disregard, when QuickChat is open
     public static String sentMessageDialog() {
         while (true) {
             String menu = """
@@ -101,8 +101,8 @@ public class Message {
         }
     }
 
-    // Read stored messages (naive parsing of the line-delimited JSON)
-    // Now returns Message[] (no java.util.List)
+    // Read stored messages
+    // Now returns Message[]
     public static Message[] readStoredMessages() {
         File f = new File("messages.json");
         if (!f.exists()) return new Message[0];

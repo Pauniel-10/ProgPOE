@@ -9,7 +9,7 @@ public class Main {
         Login user = null;
         boolean registered = false;
 
-        // Registration (console)
+        // Registration
         while (!registered) {
             System.out.println("====== Register here =======");
             System.out.print("Enter First Name: ");
@@ -40,7 +40,7 @@ public class Main {
             }
         }
 
-        // Login (console)
+        // Login
         boolean loggedIn = false;
         while (!loggedIn) {
             System.out.print("\n====== Login here =======\n");
@@ -56,7 +56,7 @@ public class Main {
             }
         }
 
-        // After login: QuickChat dialogs for menu and message entry
+        // After login QuickChat opens
         MessageService service = new MessageService();
         service.loadStoredMessagesFromFile(); // preload stored messages if any
 
@@ -86,7 +86,7 @@ public class Main {
                     }
 
                     for (int i = 0; i < numToSend; i++) {
-                        // Recipient input (dialog)
+                        // Recipient input
                         String recipient;
                         while (true) {
                             String recInput = JOptionPane.showInputDialog(null, "Enter recipient number (+CountryCode and number):", "Recipient Entry", JOptionPane.QUESTION_MESSAGE);
@@ -96,7 +96,7 @@ public class Main {
                         }
                         if (recipient == null) break;
 
-                        // Message input (dialog)
+                        // Message input
                         String msg;
                         while (true) {
                             String msgInput = JOptionPane.showInputDialog(null, "Enter your message (max 250 chars):", "Message Entry", JOptionPane.QUESTION_MESSAGE);
@@ -117,18 +117,17 @@ public class Main {
                         // Use the loop index i as the message number in the hash
                         String hash = Message.createMessageHash(messageID, i, msg);
 
-                        // Send/Store/Disregard via dialog
+                        // Send/Store/Disregard
                         String action = Message.sentMessageDialog();
                         Message m = new Message(messageID, user.getPhoneNum(), recipient, msg, hash);
 
                         if ("Send".equals(action)) {
-                            // store and increment before showing details (as spec requires "after it has been sent")
+                            // store and increment before showing details
                             m.storeMessage();
                             service.addMessage(m, "Sent");
                             totalMessagesSent++;
-                            // Show full details (JOptionPane) after the message has been sent
+                            // Show full details
                             m.printMessages();
-                            // Single console confirmation (no additional dialog)
                             System.out.println("Message successfully sent.");
                         } else if ("Store".equals(action)) {
                             m.storeMessage();
@@ -140,7 +139,7 @@ public class Main {
                         }
                     }
 
-                    // After the full batch of messages has been processed, display accumulated total once
+                    // After the full batch of messages has been processed, display total
                     JOptionPane.showMessageDialog(null, "Total messages sent: " + totalMessagesSent, "Sent Summary", JOptionPane.INFORMATION_MESSAGE);
                 }
                 case "2" -> JOptionPane.showMessageDialog(null, "Coming Soon.", "Recently Sent Messages", JOptionPane.INFORMATION_MESSAGE);
@@ -149,11 +148,11 @@ public class Main {
             }
         }
 
-        // Final console summary (kept as additional info)
+        // Final summary
         System.out.println("\n--- QuickChat Session End ---");
         System.out.println("Total messages sent (session): " + totalMessagesSent);
 
-        // Part 3: display arrays/report in console (unchanged)
+        // display report
         String[] senderRecipients = service.displaySenderRecipientOfSent();
         if (senderRecipients.length == 0) {
             System.out.println("No sent messages to display sender/recipient.");
